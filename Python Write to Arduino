@@ -1,0 +1,51 @@
+###### sample Arduino Code #####
+int data;
+void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite (LED_BUILTIN, LOW);
+  Serial.begin(9600);
+}
+
+void loop() {
+
+  while (Serial.available()) {
+    data = Serial.read();
+  }
+
+  if (data == '1') {
+    flashled();
+  }
+  else if (data == '0') {
+    digitalWrite (LED_BUILTIN, LOW);
+  }
+}
+
+void flashled() {
+  for (int i = 0; i < 5; i++) {
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(500);
+    digitalWrite(LED_BUILTIN, LOW);
+    delay(500);
+  }
+}
+
+
+############ python code ################
+
+#!/usr/bin/env python3
+
+import serial, time
+
+if __name__ == '__main__':
+
+        # arduinoData = ser.readline()
+        # print(arduinoData)
+        # ser.write(j.encode())
+        # print("signal transmitted")
+        ser = serial.Serial('COM6', baudrate=9600, timeout=0)
+
+        time.sleep(3)
+
+        ser.write('0'.encode())
+
+
