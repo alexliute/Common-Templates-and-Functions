@@ -1,5 +1,7 @@
 ###### sample Arduino Code #####
 int data;
+bool operation = 0;
+
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite (LED_BUILTIN, LOW);
@@ -9,23 +11,43 @@ void setup() {
 void loop() {
 
   while (Serial.available()) {
+    Serial.println("initiated");
     data = Serial.read();
+    Serial.println("input acquired");
+    operation = data;
   }
 
   if (data == '1') {
+    sendwave();
     flashled();
   }
   else if (data == '0') {
     digitalWrite (LED_BUILTIN, LOW);
   }
+
 }
 
 void flashled() {
-  for (int i = 0; i < 5; i++) {
+
+  for (int i = 0; i < 2; i++) {
+
+    //    if (operation == true) {
+
     digitalWrite(LED_BUILTIN, HIGH);
     delay(500);
     digitalWrite(LED_BUILTIN, LOW);
     delay(500);
+
+    //      while (Serial.available()) {
+    //        operation = Serial.read();
+    //      } // update operation
+  }
+} // operation check
+
+void sendwave() {
+  for (float i = 0; i < 20; i ++) {
+    Serial.println(i);
+    delay(100);
   }
 }
 
@@ -43,9 +65,20 @@ if __name__ == '__main__':
         # ser.write(j.encode())
         # print("signal transmitted")
         ser = serial.Serial('COM6', baudrate=9600, timeout=0)
+        time.sleep(2)
 
-        time.sleep(3)
+        a = input()
+        ser.write(a.encode())
 
-        ser.write('0'.encode())
+        while 1:
+            time.sleep(0.100)
+            b = ser.readline()
+            print(b)
+        #
+        # while True:
+        #
+        #     # ser.write(a.encode())
+        #     b = ser.readline()
+        #     print(b)
 
 
